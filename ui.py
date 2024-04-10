@@ -36,6 +36,8 @@ class UI:
                 quantum = int(input("Quantum: "))
 
             self._solve(algorithm, processes, quantum=quantum)
+            
+            isRunning = self._prompt_continue()
 
     def _solve(self, algorithm, processes, quantum=0):
         if algorithm == Algorithm.FCFS.value:
@@ -87,7 +89,7 @@ class UI:
         valid = False
         while not valid:
             print(
-                "[1] First Come First Serve\n[2] Shortest Job First\n[3] Shortest Remaining Time First\n[4] Priority\n[5] Round Robin\nSelect algorithm >> ",
+                "\n[1] First Come First Serve\n[2] Shortest Job First\n[3] Shortest Remaining Time First\n[4] Priority\n[5] Round Robin\nSelect algorithm >> ",
                 end="",
             )
             choice = int(input())
@@ -95,3 +97,8 @@ class UI:
                 valid = True
 
         return choice
+    
+    def _prompt_continue(self):
+        print("Do you want to continue? [y n]")
+        choice = str(input(">> "))
+        return choice == "y"
