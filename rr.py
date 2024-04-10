@@ -33,9 +33,12 @@ class RR:
                     
                     self.gantt_timeline.append(copy.deepcopy(current_process))
                     
-                    
         self.gantt.processes = self.gantt_timeline
         self.gantt.draw()
+        
+        print(f"\nAverage Turnaround Time: {self.att()}")
+        print(f"Average Waiting Time: {self.awt()}")
+
                     
     
     def has_burst_in_multiple(self):
@@ -52,5 +55,11 @@ class RR:
             if p.process_id == id:
                 return p
         return None
+    
+    def att(self):
+        return round(sum([p.tt for p in self.processes]) / len(self.processes), 2)
+
+    def awt(self):
+        return round(sum([p.wt for p in self.processes]) / len(self.processes), 2)
                 
     

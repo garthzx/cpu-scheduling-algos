@@ -24,19 +24,33 @@ class UI:
         isRunning = True
 
         while isRunning:
-            algorithm = self.prompt_algorithm()
-            processes = self.prompt_processes(algorithm)
+            algorithm = self._prompt_algorithm()
+            processes = self._prompt_processes(algorithm)
 
-            for p in processes:
-                print(f"{p.process_id},{p.at},{p.bt}")
+            # for p in processes:
+            #     print(f"{p.process_id},{p.at},{p.bt}")
 
+            # TODO
             quantum = 0
             if algorithm == Algorithm.RR.value:
                 quantum = int(input("Quantum: "))
-            
-                        
 
-    def prompt_processes(self, algorithm):
+            self._solve(algorithm, processes, quantum=quantum)
+
+    def _solve(self, algorithm, processes, quantum=0):
+        if algorithm == Algorithm.FCFS.value:
+            self.fcfs = FCFS(processes)
+            self.fcfs.solve()
+        elif algorithm == Algorithm.PRIORITY.value:
+            self.priority = Priority(processes)
+            self.priority.solve()
+        elif algorithm == Algorithm.SJF.value:
+            SJF(processes).solve()
+        elif algorithm == Algorithm.RR.value:
+            RR(processes=processes, quantum=quantum).solve()
+        pass
+
+    def _prompt_processes(self, algorithm):
         num_processes = int(input("Number of processes: "))
         processes = []
         for i in range(num_processes):
@@ -45,33 +59,31 @@ class UI:
                 Algorithm.SJF.value,
                 Algorithm.SRTF.value,
             ]:
-                print(
-                    "Enter process Arrival time and Burst time respectively by space-separated values."
-                )
-                process_attrs = str(input(f"P{i+1}: ")).strip().split(sep=" ")
+                process_attrs = str(input(f"P{i+1} [AT BT]: ")).strip().split(sep=" ")
+                process_attrs = list(map(int, process_attrs))
                 processes.append(
                     Process(i + 1, at=process_attrs[0], bt=process_attrs[1])
                 )
 
             elif algorithm == Algorithm.PRIORITY.value:
-                print(
-                    "Enter process Priority and Burst time respectively by space-separated values."
+                process_attrs = (
+                    str(input(f"P{i+1} [Priority BT]:")).strip().split(sep=" ")
                 )
-                process_attrs = str(input(f"P{i+1}")).strip().split(sep=" ")
+                process_attrs = list(map(int, process_attrs))
                 processes.append(
-                    Process(i + 1, at=process_attrs[0], bt=process_attrs[1])
+                    Process(i + 1, priority=process_attrs[0], bt=process_attrs[1])
                 )
 
             elif algorithm == Algorithm.RR.value:
-                print("Enter process burst time.")
-                process_attrs = str(input(f"P{i+1}")).strip().split(sep=" ")
+                process_attrs = str(input(f"P{i+1} [BT]:")).strip().split(sep=" ")
+                process_attrs = list(map(int, process_attrs))
                 processes.append(
-                    Process(i + 1, at=process_attrs[0], bt=process_attrs[1])
+                    Process(i + 1, bt=process_attrs[0])
                 )
 
         return processes
 
-    def prompt_algorithm(self):
+    def _prompt_algorithm(self):
         valid = False
         while not valid:
             print(
