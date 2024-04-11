@@ -9,7 +9,8 @@ from rr import RR
 from sjf import SJF
 from process import Process
 from algorithm import Algorithm
-
+from colorama import Fore
+import os
 
 class UI:
 
@@ -25,18 +26,23 @@ class UI:
 
         while isRunning:
             algorithm = self._prompt_algorithm()
+            if algorithm == "6":
+                os.system("cls")
+                continue
+            elif algorithm == "7":
+                isRunning = False
+                continue
+            else:
+                algorithm = int(algorithm)
+
             processes = self._prompt_processes(algorithm)
 
-            # for p in processes:
-            #     print(f"{p.process_id},{p.at},{p.bt}")
-
-            # TODO
             quantum = 0
             if algorithm == Algorithm.RR.value:
                 quantum = int(input("Quantum: "))
 
             self._solve(algorithm, processes, quantum=quantum)
-            
+
             isRunning = self._prompt_continue()
 
     def _solve(self, algorithm, processes, quantum=0):
@@ -53,7 +59,7 @@ class UI:
         pass
 
     def _prompt_processes(self, algorithm):
-        num_processes = int(input("Number of processes: "))
+        num_processes = int(input("Number of processes >> "))
         processes = []
         for i in range(num_processes):
             if algorithm in [
@@ -61,7 +67,9 @@ class UI:
                 Algorithm.SJF.value,
                 Algorithm.SRTF.value,
             ]:
-                process_attrs = str(input(f"P{i+1} [AT BT]: ")).strip().split(sep=" ")
+                process_attrs = (
+                    str(input(f"Process {i+1} [AT BT]: ")).strip().split(sep=" ")
+                )
                 process_attrs = list(map(int, process_attrs))
                 processes.append(
                     Process(i + 1, at=process_attrs[0], bt=process_attrs[1])
@@ -69,7 +77,7 @@ class UI:
 
             elif algorithm == Algorithm.PRIORITY.value:
                 process_attrs = (
-                    str(input(f"P{i+1} [Priority BT]:")).strip().split(sep=" ")
+                    str(input(f"Process {i+1} [Priority BT]:")).strip().split(sep=" ")
                 )
                 process_attrs = list(map(int, process_attrs))
                 processes.append(
@@ -77,28 +85,36 @@ class UI:
                 )
 
             elif algorithm == Algorithm.RR.value:
-                process_attrs = str(input(f"P{i+1} [BT]:")).strip().split(sep=" ")
-                process_attrs = list(map(int, process_attrs))
-                processes.append(
-                    Process(i + 1, bt=process_attrs[0])
+                process_attrs = (
+                    str(input(f"Process {i+1} [BT]:")).strip().split(sep=" ")
                 )
+                process_attrs = list(map(int, process_attrs))
+                processes.append(Process(i + 1, bt=process_attrs[0]))
 
         return processes
 
     def _prompt_algorithm(self):
         valid = False
+        choices = list(map(str, range(1, 8)))
         while not valid:
             print(
-                "\n[1] First Come First Serve\n[2] Shortest Job First\n[3] Shortest Remaining Time First\n[4] Priority\n[5] Round Robin\nSelect algorithm >> ",
+                f"\n[1] First Come First Serve\n[2] Shortest Job First\n[3] Shortest Remaining Time First\n[4] Priority\n[5] Round Robin\n[6] Clear Screen \n{Fore.RED}[7] Exit{Fore.WHITE}\n\nSelect algorithm >> ",
                 end="",
             )
-            choice = int(input())
-            if choice > 0 and choice < 6:
-                valid = True
+            try:
+                choice = input()
+                if choice in choices:
+                    valid = True
+                else:
+                    print(f"{Fore.RED}Usage: [1-5]\nPlease try again.{Fore.WHITE}")
+            except:
+                print(f"{Fore.RED}Usage: [1-5]\nPlease try again.{Fore.WHITE}")
 
         return choice
-    
+
     def _prompt_continue(self):
-        print("Do you want to continue? [y n]")
+        print(
+            f"\nDo you want to continue? [{Fore.GREEN}y{Fore.WHITE} {Fore.LIGHTRED_EX}n{Fore.WHITE}]"
+        )
         choice = str(input(">> "))
         return choice == "y"

@@ -1,14 +1,17 @@
 import math
 from gantt import Gantt
 import copy
+from table import Table
 class RR:
     def __init__(self, quantum = 0, processes = []) -> None:
         self.processes = processes
+        self.copy = copy.deepcopy(processes)
         self.current_time = 0
         self.quantum = quantum
         self.sorted = sorted(processes, key=lambda x:x.process_id)
         self.gantt = Gantt()
         self.gantt_timeline = []
+        self.table = Table(self.copy)
     
     def solve(self):
         while self.has_burst_in_multiple():
@@ -21,7 +24,7 @@ class RR:
                     #     minusBy = current_process.bt
                     # self.current_time += minusBy
                     self.current_time += min(self.quantum, current_process.bt)
-                    print(self.current_time)
+                    # print(self.current_time)
                     
                     current_process.bursted_by = min(self.quantum, current_process.bt)
                     
@@ -35,6 +38,17 @@ class RR:
                     
         self.gantt.processes = self.gantt_timeline
         self.gantt.draw()
+        
+        index = 0
+        for i in self.copy:
+            # print(f"{i.process_id}, {i.at}, {i.bt}")
+            i.et = self.processes[index].et
+            i.tt = self.processes[index].tt
+            i.wt = self.processes[index].wt
+            
+            index += 1
+            
+        self.table.draw_table()
         
         print(f"\nAverage Turnaround Time: {self.att()}")
         print(f"Average Waiting Time: {self.awt()}")

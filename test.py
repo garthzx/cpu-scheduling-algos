@@ -7,11 +7,13 @@ from rr import RR
 
 def main():
 
-    test_sjf()
+    # test_sjf()
     # test_fcfs()
 
     # test_priority()
     # test_rr()
+    choices = list(map(str, range(1, 6)))
+    print(choices)
 
 
 def test_sjf():
