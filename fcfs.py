@@ -3,7 +3,7 @@ from statistics import mean
 from gantt import Gantt
 from table import Table
 from process import Process
-
+from eval import Eval
 
 class FCFS:
     """
@@ -19,6 +19,7 @@ class FCFS:
         )
         self.gantt = Gantt()
         self.table = Table()
+        self.eval = Eval()
 
     def solve(self):
         for current_process in self.sorted:
@@ -30,17 +31,11 @@ class FCFS:
         self.gantt.draw()
         self.table.processes = sorted(self.sorted, key=lambda x: x.process_id)
         self.table.draw_table()
-
-        print(f"\nAverage Turnaround Time: {self.att()}")
-        print(f"Average Waiting Time: {self.awt()}")
-
+        
+        self.eval.processes = self.processes
+        self.eval.display_eval()
+        
     def update_params(self, current_process: Process):
         current_process.et = self.current_time
         current_process.tt = current_process.et - current_process.at
         current_process.wt = current_process.tt - current_process.bt
-
-    def att(self):
-        return round(sum([p.tt for p in self.processes]) / len(self.processes), 2)
-
-    def awt(self):
-        return round(sum([p.wt for p in self.processes]) / len(self.processes), 2)

@@ -2,7 +2,7 @@ import operator as op
 from process import Process
 from table import Table
 from gantt import Gantt
-
+from eval import Eval
 
 class SJF:
     def __init__(self, processes: list = []) -> None:
@@ -16,12 +16,9 @@ class SJF:
 
     def solve(self):
         self.set_first_processes()
-        # self.show_processes_in_cpu()
         print()
 
         while self.processes_in_cpu:
-            # self.show_processes_in_cpu()
-
             processes_sorted_in_cpu = sorted(
                 self.processes_in_cpu, key=op.attrgetter("bt", "at", "process_id")
             )
@@ -45,9 +42,9 @@ class SJF:
         self.gantt.draw()
         self.table.processes = self.processes
         self.table.draw_table()
-
-        print(f"\nAverage Turnaround Time: {self.att()}")
-        print(f"Average Waiting Time: {self.awt()}")
+        
+        eval = Eval(self.processes)
+        eval.display_eval()
 
     def remove_process(self, process):
         for p in self.copy:
@@ -88,9 +85,3 @@ class SJF:
     def show_processes_in_cpu(self):
         for p in self.processes_in_cpu:
             print(f"P{p.process_id}, AT:{p.at}, BT:{p.bt}")
-
-    def att(self):
-        return round(sum([p.tt for p in self.processes]) / len(self.processes), 2)
-
-    def awt(self):
-        return round(sum([p.wt for p in self.processes]) / len(self.processes), 2)

@@ -12,6 +12,7 @@ from algorithm import Algorithm
 from colorama import Fore
 import os
 
+
 class UI:
 
     def __init__(self) -> None:
@@ -98,7 +99,7 @@ class UI:
         choices = list(map(str, range(1, 8)))
         while not valid:
             print(
-                f"\n[1] First Come First Serve\n[2] Shortest Job First\n[3] Shortest Remaining Time First\n[4] Priority\n[5] Round Robin\n[6] Clear Screen \n{Fore.RED}[7] Exit{Fore.WHITE}\n\nSelect algorithm >> ",
+                f"\n[1] First Come First Serve\n[2] Shortest Job First\n[3] Shortest Remaining Time First\n[4] Priority\n[5] Round Robin\n{Fore.CYAN}[6] Clear Screen {Fore.WHITE}\n{Fore.RED}[7] Exit{Fore.WHITE}\n\nSelect algorithm >> ",
                 end="",
             )
             try:
