@@ -6,6 +6,6 @@ Groupmate: Christian Sumeran (link to github here)
 
 
 Usage:
-```js
+```console
 $ python main.py
 ```
