@@ -1,4 +1,5 @@
 from tabulate import tabulate
+from colorama import Fore
 
 class Table:
     def __init__(self, processes : list = []):
@@ -8,7 +9,7 @@ class Table:
         self.processes.append(process)
     
     def draw_table(self, isPriority=False):
-        print("\nTABLE:\n")
+        print(f"\n{Fore.CYAN}TABLE:{Fore.WHITE}\n")
         data = []
         
         if isPriority:

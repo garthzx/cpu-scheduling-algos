@@ -1,10 +1,16 @@
+"""_summary_
+    Nothing to see here. Just a file for convenient testing. 
+"""
+
 from process import Process
 from fcfs import FCFS
 from sjf import SJF
 from priority import Priority
 from rr import RR
 from srtf import SRTF
+
 # from srtf_sumeran import SRTF
+
 
 def main():
 
@@ -16,9 +22,10 @@ def main():
 
     # choices = list(map(str, range(1, 6)))
     # print(choices)
-    
+
     test_srtf()
-    
+
+
 def test_srtf():
     p1 = Process(1, 3, 4)
     p2 = Process(2, 5, 9)
@@ -26,8 +33,8 @@ def test_srtf():
     p4 = Process(4, 0, 7)
     p5 = Process(5, 12, 6)
     processes = [p1, p2, p3, p4, p5]
-    SRTF(processes).solve()    
-    
+    SRTF(processes).solve()
+
 
 def test_sjf():
     p1 = Process(1, 3, 4)

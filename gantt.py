@@ -1,3 +1,5 @@
+from colorama import Fore
+
 class Gantt:
     def __init__(self, processes: list = []):
         self.processes = processes
@@ -7,7 +9,7 @@ class Gantt:
         self.processes.append(process)
 
     def draw(self):
-        print("\nGANTT CHART:\n")
+        print(f"\n{Fore.CYAN}GANTT CHART:{Fore.WHITE}\n")
         self.draw_horizontal()
         self.draw_strips()
         self.draw_horizontal()
