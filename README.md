@@ -4,6 +4,10 @@
 
 Groupmate: Christian Sumeran (link to github here)
 
+An windows executable file can be found at /dist/main.exe
+
+
+For developers wanting to run the project without using the executable file, be guided by the instructions below. 
 
 Requirements:
 ```console
